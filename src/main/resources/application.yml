@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: cor-service
+  banner:
+    location:
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 15000
+        readTimeout: 15000
+
+logging:
+  level:
+    com.unni.corservice.client.*: DEBUG
+  file:
+    path: ${spring.application.name}
+  pattern:
+    console: "%clr(TS=){faint}%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z', UTC}){faint} [%t] %clr(APP=){faint}%clr(${spring.application.name:null}){yellow} %clr(ENV=){faint}%clr(${spring.profiles.active:null}){magenta} %clr(LEVEL=){faint}%clr(${LOG_LEVEL_PATTERN:%p}) %clr(CLASS=){faint}%clr(%logger{26}){cyan}  %clr(TRACEID=){faint}%clr(%X{correlationId:-null}){reverse} | %m%n%ex"
+
+movie-client:
+  url: https://moviedatabase8.p.rapidapi.com

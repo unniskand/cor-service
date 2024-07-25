@@ -18,6 +18,13 @@ feign:
         connectTimeout: 15000
         readTimeout: 15000
 
+cor-service:
+  headers:
+    validate: false
+  logger:
+    active: true
+    log-parsing-errors: true
+
 logging:
   level:
     com.unni.corservice.client.*: DEBUG

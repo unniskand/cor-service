@@ -1,4 +1,4 @@
-package com.unni.corservice.config;
+package com.unni.corservice.logging;
 
 import com.unni.corservice.logging.LoggingService;
 import com.unni.corservice.logging.RequestWrapper;

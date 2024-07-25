@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,7 +51,16 @@ public class MaskedLoggingService implements LoggingService {
 
     @Override
     public void logResponse(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object body) {
+        StringBuilder respMessage = new StringBuilder();
+        Map<String,String> headers = getHeaders(httpServletResponse);
+        respMessage.append("RESPONSE >> ");
+        respMessage.append("method=").append(httpServletRequest.getMethod()).append(" ");
+        if(!headers.isEmpty()) {
+            respMessage.append("headers=").append(headers).append(" ");
+        }
+        respMessage.append("body=").append(body).append(" ");
 
+        log.info(respMessage.toString().trim());
     }
 
     private Map<String, List<String>> buildHeadersMap(final HttpServletRequest request) {
@@ -63,6 +70,15 @@ public class MaskedLoggingService implements LoggingService {
                         return this.isSensitiveHeader(header) ? "**********" : value;
                     }).collect(Collectors.toList());
                 }));
+    }
+
+    private Map<String,String> getHeaders(HttpServletResponse response) {
+        Map<String,String> headers = new HashMap<>();
+        Collection<String> headerMap = response.getHeaderNames();
+        for(String str : headerMap) {
+            headers.put(str,response.getHeader(str));
+        }
+        return headers;
     }
 
     private boolean isSensitiveHeader(String header) {
